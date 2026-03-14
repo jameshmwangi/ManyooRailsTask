@@ -12,18 +12,18 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, 'Title' %><br>
+  <div class="field">
+    <%= form.label :title, "Title Title" %>
     <%= form.text_field :title %>
   </div>
 
-  <div>
-    <%= form.label :content, 'Content' %><br>
+  <div class="field">
+    <%= form.label :content, "Content" %>
     <%= form.text_area :content %>
   </div>
 
-  <div>
-    <%= form.submit 'Create Task', id: 'create-task' %>
+  <div class="actions">
+    <%= form.submit "Create Task", id: 'create-task' %>
   </div>
 <% end %>
 
