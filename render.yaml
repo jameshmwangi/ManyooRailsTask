@@ -19,4 +19,4 @@ services:
         generateValue: true
       - key: RAILS_MASTER_KEY
         sync: false
-    preDeployCommand: "bundle exec rails db:migrate"
+    
