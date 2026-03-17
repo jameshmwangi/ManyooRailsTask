@@ -2,11 +2,11 @@ FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUBY_VERSION=3.0.1
+ENV TZ=Africa/Nairobi
 
 RUN apt-get update -qq && apt-get install -y \
     curl git build-essential libssl-dev libreadline-dev \
-    zlib1g-dev libpq-dev postgresql-client wget gnupg2
-
+    zlib1g-dev libpq-dev postgresql-client wget gnupg2 tzdata
 # Node 18
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
