@@ -29,6 +29,7 @@ COPY Gemfile /manyoo-rails-task/Gemfile
 COPY Gemfile.lock /manyoo-rails-task/Gemfile.lock
 RUN gem install nokogiri --platform=ruby
 RUN bundle config set force_ruby_platform true
+RUN gem install bundler:2.5.10
 RUN bundle install
 COPY . /manyoo-rails-task
 
