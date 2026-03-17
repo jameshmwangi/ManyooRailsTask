@@ -34,6 +34,7 @@ RUN bundle config set force_ruby_platform true
 RUN bundle install
 COPY . /manyoo-rails-task
 RUN yarn install
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile
 
 COPY entrypoint.sh /usr/bin/
