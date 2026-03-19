@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV RUBY_VERSION=3.0.1
+ENV RUBY_VERSION=3.0.3
 ENV TZ=Africa/Nairobi
 
 RUN apt-get update -qq && apt-get install -y \
@@ -16,7 +16,7 @@ RUN wget --quiet -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update -qq && apt-get install -y yarn
 
-# rbenv + Ruby 3.0.1
+# rbenv + Ruby 3.0.3
 RUN git clone https://github.com/rbenv/rbenv.git /usr/local/rbenv && \
     git clone https://github.com/rbenv/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 
