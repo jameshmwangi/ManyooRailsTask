@@ -2,7 +2,8 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all
+    # Fetches tasks in descending order, paginated, 10 per page
+    @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show
@@ -18,7 +19,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      redirect_to tasks_path, notice: 'Task was successfully created.'
+      redirect_to tasks_path, notice: t('flash.tasks.create')
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,7 +27,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to @task, notice: 'Task was successfully updated.'
+      redirect_to @task, notice: t('flash.tasks.update')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -34,7 +35,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to tasks_path, notice: 'Task was successfully destroyed.'
+    redirect_to tasks_url, notice: t('flash.tasks.destroy')
   end
 
   private
