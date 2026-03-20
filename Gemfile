@@ -35,7 +35,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rexml'
   gem 'factory_bot_rails'
-  gem 'ffi', '>= 1.17.0'
+  gem 'ffi', '~> 1.16.3'
 end
 
 group :development do

@@ -83,13 +83,7 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    ffi (1.17.3)
-    ffi (1.17.3-aarch64-linux-gnu)
-    ffi (1.17.3-arm-linux-gnu)
-    ffi (1.17.3-arm64-darwin)
-    ffi (1.17.3-x86-linux-gnu)
-    ffi (1.17.3-x86_64-darwin)
-    ffi (1.17.3-x86_64-linux-gnu)
+    ffi (1.16.3)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.14.5)
@@ -291,7 +285,7 @@ DEPENDENCIES
   byebug
   capybara (>= 2.15)
   factory_bot_rails
-  ffi (>= 1.17.0)
+  ffi (~> 1.16.3)
   jbuilder (~> 2.7)
   kaminari
   listen (~> 3.2)
