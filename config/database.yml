@@ -20,10 +20,13 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: postgres
+  password: <%= ENV['GITHUB_ACTIONS'] ? '' : 'postgres' %>
 
 development:
   <<: *default
   database: cdp_web_manyo_task_development
+  host: localhost
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -58,6 +61,7 @@ development:
 test:
   <<: *default
   database: cdp_web_manyo_task_test
+  host: localhost
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,7 +83,17 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: cdp_web_manyo_task_production
-  username: cdp_web_manyo_task
-  password: <%= ENV['CDP_WEB_MANYO_TASK_DATABASE_PASSWORD'] %>
+  primary: &primary_production
+    <<: *default
+    # Render provides this URL, which overrides host/database/password settings
+    url: <%= ENV["DATABASE_URL"] %>
+  cache:
+    <<: *primary_production
+    # If you aren't using separate databases for cache, keep it pointing to primary
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    migrations_paths: db/cable_migrate
