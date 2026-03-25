@@ -5,11 +5,11 @@ RSpec.describe 'Task management function', type: :system do
     context 'when a user submits a new task' do
       it 'displays the newly created task' do
         visit new_task_path
-        fill_in 'Title', with: 'My Test Task'
-        fill_in 'Content', with: 'My test content.'
-        click_button 'Create Task'
+        fill_in 'タイトル', with: 'My Test Task'
+        fill_in '内容', with: 'My test content.'
+        click_button '登録する'
 
-        expect(page).to have_content 'Task was successfully created.'
+        expect(page).to have_content 'タスクを登録しました'
         expect(page).to have_content 'My Test Task'
       end
     end
@@ -40,11 +40,11 @@ RSpec.describe 'Task management function', type: :system do
     context 'when a new task is created' do
       it 'appears at the top of the list' do
         visit new_task_path
-        fill_in 'Title', with: 'newly_created_task'
-        fill_in 'Content', with: 'My test content.'
-        click_button 'Create Task'
+        fill_in 'タイトル', with: 'newly_created_task'
+        fill_in '内容', with: 'My test content.'
+        click_button '登録する'
 
-        expect(page).to have_content 'Task was successfully created.'
+        expect(page).to have_content 'タスクを登録しました'
         task_list = all('tbody tr')
         expect(task_list[0]).to have_content 'newly_created_task'
       end
