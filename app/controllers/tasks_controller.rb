@@ -2,8 +2,31 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    # Fetches tasks in descending order, paginated, 10 per page
-    @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+    # Start with all tasks
+    @tasks = Task.all
+
+    # Search filtering via scope: :search params
+    if params[:search].present?
+      if params[:search][:title].present? && params[:search][:status].present?
+        @tasks = @tasks.search_title(params[:search][:title]).search_status(params[:search][:status])
+      elsif params[:search][:title].present?
+        @tasks = @tasks.search_title(params[:search][:title])
+      elsif params[:search][:status].present?
+        @tasks = @tasks.search_status(params[:search][:status])
+      end
+    end
+
+    # Sorting: deadline, priority, or default (newest first)
+    if params[:sort_deadline_on]
+      @tasks = @tasks.sort_deadline_on
+    elsif params[:sort_priority]
+      @tasks = @tasks.sort_priority
+    else
+      @tasks = @tasks.sort_created_at
+    end
+
+    # Pagination
+    @tasks = @tasks.page(params[:page]).per(10)
   end
 
   def show
@@ -45,6 +68,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :content)
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
   end
 end
