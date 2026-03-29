@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(version: 2026_03_29_195235) do
     t.text "content", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.date "deadline_on", null: false
-    t.integer "priority", null: false
-    t.integer "status", null: false
+    t.date "deadline_on", default: -> { "CURRENT_DATE" }, null: false
+    t.integer "priority", default: 0, null: false
+    t.integer "status", default: 0, null: false
     t.index ["status"], name: "index_tasks_on_status"
   end
 
