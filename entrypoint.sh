@@ -4,9 +4,10 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /manyoo-rails-task/tmp/pids/server.pid
 
-# Run migrations in production
+# Run migrations and seed in production
 if [ "$RAILS_ENV" = "production" ]; then
-bundle exec rails db:migrate
+  bundle exec rails db:migrate
+  bundle exec rails db:seed
 fi
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).

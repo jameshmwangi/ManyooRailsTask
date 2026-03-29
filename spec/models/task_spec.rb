@@ -6,7 +6,7 @@ RSpec.describe 'Task model function', type: :model do
       it 'Validation fails' do
         task = Task.create(title: '', content: 'Create a proposal.')
         expect(task).not_to be_valid
-        expect(task.errors[:title]).to include("can't be blank")
+        expect(task.errors[:title]).to include("を入力してください")
       end
     end
 
@@ -14,7 +14,7 @@ RSpec.describe 'Task model function', type: :model do
       it 'Validation fails' do
         task = Task.create(title: 'Document preparation', content: '')
         expect(task).not_to be_valid
-        expect(task.errors[:content]).to include("can't be blank")
+        expect(task.errors[:content]).to include("を入力してください")
       end
     end
 
