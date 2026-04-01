@@ -19,6 +19,21 @@
     <%= form.text_area :content %>
   </div>
 
+  <div class="field">
+    <%= form.label :deadline_on, Task.human_attribute_name(:deadline_on) %>
+    <%= form.date_field :deadline_on %>
+  </div>
+
+  <div class="field">
+    <%= form.label :priority, Task.human_attribute_name(:priority) %>
+    <%= form.select :priority, Task.priorities.keys.map { |k| [t("activerecord.enums.task.priority.#{k}"), k] }, include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status, Task.human_attribute_name(:status) %>
+    <%= form.select :status, Task.statuses.keys.map { |k| [t("activerecord.enums.task.status.#{k}"), k] }, include_blank: true %>
+  </div>
+
   <div class="actions">
     <%= form.submit id: (task.new_record? ? 'create-task' : 'update-task') %>
   </div>

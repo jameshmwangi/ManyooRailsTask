@@ -1,11 +1,9 @@
 FactoryBot.define do
   factory :task do
     title { 'Document preparation' }
-    content { 'Create a proposal.' }
-  end
-
-  factory :second_task, class: Task do
-    title { 'send e-mail' }
-    content { 'Send a sales email to a customer.' }
+    content { 'My test content.' }
+    deadline_on { '2026-12-31' }
+    priority { 'medium' }
+    status { 'not_started' }
   end
 end
