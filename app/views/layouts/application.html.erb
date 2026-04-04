@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>CdpWebManyoTask</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+</head>
+<body>
+    <nav>
+      <% if logged_in? %>
 
-  <body>
-    <header style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc;">
-      <nav>
-        <%= link_to t('common.nav.tasks_index'), tasks_path, id: 'tasks-index' %> |
-        <%= link_to t('common.nav.new_task'), new_task_path, id: 'new-task' %>
-      </nav>
-    </header>
-    <% if notice %>
-      <p id="notice"><%= notice %></p>
+        <% if current_user.admin? %>
+          <%= link_to 'ユーザ一覧', admin_users_path, id: 'users-index' %> |
+          <%= link_to 'ユーザを登録する', new_admin_user_path, id: 'add-user' %> |
+        <% end %>
+
+        <%= link_to 'タスク一覧', tasks_path, id: 'tasks-index' %> |
+        <%= link_to 'タスクを登録する', new_task_path, id: 'new-task' %> |
+        <%= link_to 'アカウント設定', user_path(current_user), id: 'account-setting' %> |
+        <%= link_to 'ログアウト', session_path(current_user.id), method: :delete, id: 'sign-out' %>
+
+      <% else %>
+        <%= link_to 'アカウント登録', new_user_path, id: 'sign-up' %> |
+        <%= link_to 'ログイン', new_session_path, id: 'sign-in' %>
+      <% end %>
+    </nav>
+
+    <% flash.each do |key, message| %>
+      <div class="flash <%= key %>"><%= message %></div>
     <% end %>
+
     <%= yield %>
-  </body>
+</body>
 </html>
