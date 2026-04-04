@@ -1,8 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'Task management function', type: :system do
+  let!(:user) { FactoryBot.create(:user) }
+
   describe 'Registration' do
     context 'when a user submits a new task' do
+      before do
+        visit new_session_path
+        fill_in 'メールアドレス', with: user.email
+        fill_in 'パスワード', with: 'password'
+        click_button 'ログイン'
+      end
+
       it 'displays the newly created task' do
         visit new_task_path
         fill_in 'タイトル', with: 'My Test Task'
@@ -19,12 +28,17 @@ RSpec.describe 'Task management function', type: :system do
   end
 
   describe 'Task list' do
-    # Three test data sets with different title, deadline, priority and status
-    let!(:first_task)  { FactoryBot.create(:task, title: 'first_task',  created_at: '2025-02-18', deadline_on: '2022-02-18', priority: 'medium', status: 'not_started') }
-    let!(:second_task) { FactoryBot.create(:task, title: 'second_task', created_at: '2025-02-17', deadline_on: '2022-02-17', priority: 'high', status: 'in_progress') }
-    let!(:third_task)  { FactoryBot.create(:task, title: 'third_task',  created_at: '2025-02-16', deadline_on: '2022-02-16', priority: 'low', status: 'completed') }
+    let!(:first_task)  { FactoryBot.create(:task, title: 'first_task',  created_at: '2025-02-18', deadline_on: '2022-02-18', priority: 'medium', status: 'not_started', user: user) }
+    let!(:second_task) { FactoryBot.create(:task, title: 'second_task', created_at: '2025-02-17', deadline_on: '2022-02-17', priority: 'high', status: 'in_progress', user: user) }
+    let!(:third_task)  { FactoryBot.create(:task, title: 'third_task',  created_at: '2025-02-16', deadline_on: '2022-02-16', priority: 'low', status: 'completed', user: user) }
 
-    before { visit tasks_path }
+    before do
+      visit new_session_path
+      fill_in 'メールアドレス', with: user.email
+      fill_in 'パスワード', with: 'password'
+      click_button 'ログイン'
+      visit tasks_path
+    end
 
     context 'when the list page is loaded' do
       it 'shows all registered tasks' do
@@ -52,6 +66,7 @@ RSpec.describe 'Task management function', type: :system do
         click_button '登録する'
 
         expect(page).to have_content 'タスクを登録しました'
+        visit tasks_path
         task_list = all('tbody tr')
         expect(task_list[0]).to have_content 'newly_created_task'
       end
@@ -64,7 +79,6 @@ RSpec.describe 'Task management function', type: :system do
           sleep 0.5
 
           task_list = all('tbody tr')
-          # 2022-02-16 is earliest, so third_task should be at the top
           expect(task_list[0]).to have_content 'third_task'
           expect(task_list[1]).to have_content 'second_task'
           expect(task_list[2]).to have_content 'first_task'
@@ -77,7 +91,6 @@ RSpec.describe 'Task management function', type: :system do
           sleep 0.5
 
           task_list = all('tbody tr')
-          # High (second_task) -> Medium (first_task) -> Low (third_task)
           expect(task_list[0]).to have_content 'second_task'
           expect(task_list[1]).to have_content 'first_task'
           expect(task_list[2]).to have_content 'third_task'
@@ -99,21 +112,18 @@ RSpec.describe 'Task management function', type: :system do
 
       context 'Search by status' do
         it "Only tasks matching the searched status will be displayed" do
-          # Test "Not started"
           select '未着手', from: 'ステータス'
           click_button '検索'
           expect(page).to have_content 'first_task'
           expect(page).not_to have_content 'second_task'
           expect(page).not_to have_content 'third_task'
 
-          # Test "In progress"
           select '着手中', from: 'ステータス'
           click_button '検索'
           expect(page).not_to have_content 'first_task'
           expect(page).to have_content 'second_task'
           expect(page).not_to have_content 'third_task'
 
-          # Test "Completed"
           select '完了', from: 'ステータス'
           click_button '検索'
           expect(page).not_to have_content 'first_task'
@@ -139,7 +149,12 @@ RSpec.describe 'Task management function', type: :system do
   describe 'Task detail' do
     context 'when a user visits a task page' do
       it 'displays the full task content' do
-        task = FactoryBot.create(:task, title: 'Document preparation', content: 'My test content.', deadline_on: '2026-12-31', priority: 'medium', status: 'not_started')
+        visit new_session_path
+        fill_in 'メールアドレス', with: user.email
+        fill_in 'パスワード', with: 'password'
+        click_button 'ログイン'
+
+        task = FactoryBot.create(:task, title: 'Document preparation', content: 'My test content.', deadline_on: '2026-12-31', priority: 'medium', status: 'not_started', user: user)
         visit task_path(task.id)
 
         expect(page).to have_content 'Document preparation'
