@@ -8,7 +8,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         fill_in '名前', with: 'テストユーザー'
         fill_in 'メールアドレス', with: 'test@example.com'
         fill_in 'パスワード', with: 'password'
-        fill_in 'パスワード（確認用）', with: 'password'
+        fill_in 'パスワード（確認）', with: 'password'
         click_button '登録する'
 
         expect(page).to have_content 'タスク一覧'
@@ -83,7 +83,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         fill_in '名前', with: '新管理者'
         fill_in 'メールアドレス', with: 'newadmin@example.com'
         fill_in 'パスワード', with: 'password'
-        fill_in 'パスワード（確認用）', with: 'password'
+        fill_in 'パスワード（確認）', with: 'password'
         check '管理者権限'
         click_button '登録する'
 
@@ -99,7 +99,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         visit edit_admin_user_path(user)
         fill_in '名前', with: 'アップデート名'
         fill_in 'パスワード', with: 'password'
-        fill_in 'パスワード（確認用）', with: 'password'
+        fill_in 'パスワード（確認）', with: 'password'
         click_button '更新する'
 
         expect(page).to have_content 'ユーザを更新しました'
