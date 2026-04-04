@@ -23,8 +23,8 @@
         <td><%= task.content %></td>
         <td><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></td>
         <td><%= task.deadline_on %></td>
-        <td><%= task.priority %></td>
-        <td><%= task.status %></td>
+        <td><%= t("activerecord.enums.task.priority.#{task.priority}") %></td>
+        <td><%= t("activerecord.enums.task.status.#{task.status}") %></td>
       </tr>
     <% end %>
   </tbody>
