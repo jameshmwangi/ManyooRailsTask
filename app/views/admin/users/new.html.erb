@@ -1,0 +1,42 @@
+<h1>ユーザ登録ページ</h1>
+
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: [:admin, @user], local: true) do |f| %>
+  <div class="field">
+    <%= f.label :name, '名前' %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email, 'メールアドレス' %>
+    <%= f.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password, 'パスワード' %>
+    <%= f.password_field :password %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation, 'パスワード（確認用）' %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin, '管理者権限' %>
+    <%= f.check_box :admin %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit '登録する', id: 'create-user' %>
+  </div>
+<% end %>
