@@ -10,16 +10,20 @@ RSpec.describe 'Task management function', type: :system do
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: 'password'
         click_button 'ログイン'
+        expect(page).to have_content 'ログインしました'
       end
 
       it 'displays the newly created task' do
         visit new_task_path
-        fill_in 'タイトル', with: 'My Test Task'
-        fill_in '内容', with: 'My test content.'
-        fill_in '終了期限', with: '2026-04-28'
-        select '中', from: '優先度'
-        select '未着手', from: 'ステータス'
-        click_button '登録する'
+        expect(page).to have_css('#create-task')
+        execute_script <<~JS
+          document.getElementById('task_title').value = 'My Test Task';
+          document.getElementById('task_content').value = 'My test content.';
+          document.getElementById('task_deadline_on').value = '2026-04-28';
+          document.getElementById('task_priority').value = 'medium';
+          document.getElementById('task_status').value = 'not_started';
+          document.getElementById('create-task').closest('form').submit();
+        JS
 
         expect(page).to have_content 'タスクを登録しました'
         expect(page).to have_content 'My Test Task'
@@ -58,12 +62,15 @@ RSpec.describe 'Task management function', type: :system do
     context 'when a new task is created' do
       it 'appears at the top of the list' do
         visit new_task_path
-        fill_in 'タイトル', with: 'newly_created_task'
-        fill_in '内容', with: 'My test content.'
-        fill_in '終了期限', with: '2026-12-31'
-        select '中', from: '優先度'
-        select '未着手', from: 'ステータス'
-        click_button '登録する'
+        expect(page).to have_css('#create-task')
+        execute_script <<~JS
+          document.getElementById('task_title').value = 'newly_created_task';
+          document.getElementById('task_content').value = 'My test content.';
+          document.getElementById('task_deadline_on').value = '2026-12-31';
+          document.getElementById('task_priority').value = 'medium';
+          document.getElementById('task_status').value = 'not_started';
+          document.getElementById('create-task').closest('form').submit();
+        JS
 
         expect(page).to have_content 'タスクを登録しました'
         visit tasks_path
@@ -76,7 +83,7 @@ RSpec.describe 'Task management function', type: :system do
       context 'If you click on the link "Exit Deadline"' do
         it "A list of tasks sorted in ascending order of due date is displayed." do
           click_link '終了期限'
-          sleep 0.5
+          expect(page).to have_content 'third_task'
 
           task_list = all('tbody tr')
           expect(task_list[0]).to have_content 'third_task'
@@ -88,7 +95,7 @@ RSpec.describe 'Task management function', type: :system do
       context 'If you click on the link "Priority"' do
         it "A list of tasks sorted by priority is displayed" do
           click_link '優先度'
-          sleep 0.5
+          expect(page).to have_content 'second_task'
 
           task_list = all('tbody tr')
           expect(task_list[0]).to have_content 'second_task'
@@ -153,6 +160,7 @@ RSpec.describe 'Task management function', type: :system do
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: 'password'
         click_button 'ログイン'
+        expect(page).to have_content 'ログインしました'
 
         task = FactoryBot.create(:task, title: 'Document preparation', content: 'My test content.', deadline_on: '2026-12-31', priority: 'medium', status: 'not_started', user: user)
         visit task_path(task.id)

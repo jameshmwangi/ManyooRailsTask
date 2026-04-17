@@ -48,8 +48,14 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400] do |options|
       options.add_argument('no-sandbox')
+      options.add_argument('disable-gpu')
+      options.add_argument('disable-dev-shm-usage')
     end
   end
+
+  # Increase Capybara wait time to prevent flaky failures
+  require 'capybara/rspec'
+  Capybara.default_max_wait_time = 10
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.

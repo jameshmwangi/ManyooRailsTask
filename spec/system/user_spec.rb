@@ -35,6 +35,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: 'password'
         click_button 'ログイン'
+        expect(page).to have_content 'ログインしました'
       end
 
       it 'タスク一覧画面に遷移し、「ログインしました」というメッセージが表示される' do
@@ -71,6 +72,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         fill_in 'メールアドレス', with: admin_user.email
         fill_in 'パスワード', with: 'password'
         click_button 'ログイン'
+        expect(page).to have_content 'ログインしました'
       end
 
       it 'ユーザー一覧画面にアクセスできる' do
@@ -125,6 +127,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: 'password'
         click_button 'ログイン'
+        expect(page).to have_content 'ログインしました'
       end
 
       it 'タスク一覧画面に遷移し、「管理者以外はアクセスできません」というエラーメッセージが表示される' do
