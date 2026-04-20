@@ -1,51 +1,35 @@
-<style>
-  .task-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
+<h1 class="mb-4"><%= t('tasks.index.title') %></h1>
 
-  .task-table th, .task-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
+<%= form_with(scope: :search, url: tasks_path, method: :get, local: true, class: 'search-form form-inline mb-4 p-3 bg-light border rounded', id: 'search_form') do |form| %>
 
-  .task-table th {
-    background-color: #f4f4f4;
-  }
+  <div class="form-group mr-3">
+    <%= form.label :title, Task.human_attribute_name(:title), class: 'mr-2 font-weight-bold' %>
+    <%= form.text_field :title, value: params.dig(:search, :title), class: 'form-control', id: 'search_title' %>
+  </div>
 
-  .search-form {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-  }
-</style>
+  <div class="form-group mr-3">
+    <%= form.label :status, Task.human_attribute_name(:status), class: 'mr-2 font-weight-bold' %>
+    <%= form.select :status, Task.statuses.keys.map { |k| [t("activerecord.enums.task.status.#{k}"), k] }, { include_blank: true, selected: params.dig(:search, :status) }, class: 'form-control', id: 'search_status' %>
+  </div>
 
-<h1><%= t('tasks.index.title') %></h1>
+  <div class="form-group mr-3">
+    <%= form.label :label_id, 'ラベル', class: 'mr-2 font-weight-bold' %>
+    <%= form.select :label_id, Label.pluck(:name, :id), { include_blank: true, selected: params.dig(:search, :label_id) }, class: 'form-control', id: 'search_label_id' %>
+  </div>
 
-<%# Search form using scope: :search so params nest under params[:search] %>
-<%= form_with(scope: :search, url: tasks_path, method: :get, local: true, class: 'search-form') do |form| %>
-  <%= form.label :title, Task.human_attribute_name(:title) %>
-  <%= form.text_field :title, value: params.dig(:search, :title) %>
-
-  <%= form.label :status, Task.human_attribute_name(:status) %>
-  <%= form.select :status, Task.statuses.keys.map { |k| [t("activerecord.enums.task.status.#{k}"), k] }, { include_blank: true, selected: params.dig(:search, :status) } %>
-
-  <%= form.submit "検索", id: 'search_task' %>
+  <%= form.submit "検索", id: 'search_task', class: 'btn btn-primary' %>
 <% end %>
 
-<table class="task-table">
+<table class="table table-striped border-bottom mb-4">
   <thead>
     <tr>
-      <th class="title"><%= Task.human_attribute_name(:title) %></th>
-      <th class="content"><%= Task.human_attribute_name(:content) %></th>
-      <th class="created_at"><%= Task.human_attribute_name(:created_at) %></th>
-      <th class="deadline_on"><%= link_to Task.human_attribute_name(:deadline_on), sort_deadline_on: true %></th>
-      <th class="priority"><%= link_to Task.human_attribute_name(:priority), sort_priority: true %></th>
-      <th class="status"><%= Task.human_attribute_name(:status) %></th>
-      <th class="actions">Actions</th>
+      <th><%= Task.human_attribute_name(:title) %></th>
+      <th><%= Task.human_attribute_name(:content) %></th>
+      <th><%= Task.human_attribute_name(:created_at) %></th>
+      <th><%= link_to Task.human_attribute_name(:deadline_on), sort_deadline_on: true %></th>
+      <th><%= link_to Task.human_attribute_name(:priority), sort_priority: true %></th>
+      <th><%= Task.human_attribute_name(:status) %></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
@@ -59,17 +43,15 @@
         <td><%= t("activerecord.enums.task.priority.#{task.priority}") %></td>
         <td><%= t("activerecord.enums.task.status.#{task.status}") %></td>
         <td>
-          <%= link_to t('tasks.index.show'), task, class: 'show-task', style: 'margin-right: 10px;' %>
-          <%= link_to t('tasks.index.edit'), edit_task_path(task), class: 'edit-task', style: 'margin-right: 10px;' %>
-          <%= link_to t('tasks.index.destroy'), task, method: :delete, data: { confirm: t('tasks.index.confirm') }, class: 'destroy-task' %>
+          <%= link_to t('tasks.index.show'), task, class: 'btn btn-sm btn-primary show-task' %>
+          <%= link_to t('tasks.index.edit'), edit_task_path(task), class: 'btn btn-sm btn-primary edit-task' %>
+          <%= link_to t('tasks.index.destroy'), task, method: :delete, data: { confirm: t('tasks.index.confirm') }, class: 'btn btn-sm btn-danger destroy-task' %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-<%= paginate @tasks %>
-
-<br><br>
-<%= link_to t('tasks.index.new_task'), new_task_path %>
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @tasks %>
+</div>

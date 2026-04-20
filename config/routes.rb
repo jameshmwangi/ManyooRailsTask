@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :tasks
   resources :users, only: [:new, :create, :show, :edit, :update]
+  resources :labels
 
   resources :sessions, only: [:new, :create, :destroy]
   get '/sessions/:id', to: 'sessions#destroy'
