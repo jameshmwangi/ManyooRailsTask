@@ -158,7 +158,7 @@ RSpec.describe 'Task management function', type: :system do
         it 'All tasks with that label are displayed.' do
           visit tasks_path
 
-          select '検索用ラベル', from: 'search[label_id]'
+          select '検索用ラベル', from: 'search[label]'
           click_button '検索'
 
           expect(page).to have_content 'first_task'
