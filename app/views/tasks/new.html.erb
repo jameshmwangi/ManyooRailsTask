@@ -1,6 +1,4 @@
-<h1><%= t('tasks.new.title') %></h1>
-
-<%= render 'form', task: @task %>
-
-<br>
-<%= link_to t('tasks.new.back'), tasks_path, id: 'back' %>
+<div class="mx-auto" style="max-width: 600px;">
+  <h1 class="mb-4 font-weight-bold"><%= t('tasks.new.title') %></h1>
+  <%= render 'form', task: @task %>
+</div>

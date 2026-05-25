@@ -1,5 +1,7 @@
-Task.delete_all
-User.delete_all
+# Idempotent: only seed when the database has no users.
+# To reset manually, run in `rails console`:
+#   Labelling.delete_all; Label.delete_all; Task.delete_all; User.delete_all
+return if User.exists?
 
 # Create a general user
 general_user = User.create!(

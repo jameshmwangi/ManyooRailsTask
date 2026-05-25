@@ -1,0 +1,26 @@
+<h1>ラベル登録ページ</h1>
+
+<%= form_with(model: @label, local: true) do |form| %>
+  <% if @label.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul class="mb-0">
+        <% @label.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, '名前' %>
+    <%= form.text_field :name, class: 'form-control', id: 'labels' %>
+  </div>
+
+  <div class="form-group mt-3">
+    <%= form.submit '登録する', id: 'register', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<div class="mt-3">
+  <%= link_to '戻る', labels_path, id: 'back' %>
+</div>

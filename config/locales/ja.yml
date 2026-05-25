@@ -12,6 +12,7 @@ ja:
     models:
       task: "タスク"
       user: "ユーザ"
+      label: "ラベル"
     attributes:
       task:
         title: "タイトル"
@@ -25,6 +26,8 @@ ja:
         email: "メールアドレス"
         password: "パスワード"
         password_confirmation: "パスワード（確認）"
+      label:
+        name: "名前"
     
     enums:
       task:
